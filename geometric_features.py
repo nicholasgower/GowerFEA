@@ -29,6 +29,7 @@ class drawing:
         for feature in self.features:
             out+=feature.children
     def rebuild():
+        pass
         #Apply constraints
         #Apply Dimensions
         
@@ -48,6 +49,28 @@ class dimension:
         
     def __str__(self):
         return "Dimension for \"{}\" involving {} and {}".format(self.drawing,self.entity1,self.entity2)
+    
+#Editors note: 10/16/2023    
+#This dimension code is getting very convoluted. I'm going with a more centralized approach. All geometric features, constraints and 
+#dimensions shall only be stored within the drawing object, and the numerical positions of features will be recalculated whenever
+#a rebuild function is called within the drawing object. Each feature object will only contain numerical data, not partial functions, as
+#I attempted to do. It is clear that relying on partial objects will make the program much more difficult to debug.
+
+#I wonder if putting constraints and dimensions within a matrix and solving the matrix is a good way to build drawings?
+#That would require defining each constraint as an algebraic equation. Quite a bit simpler than my old approach.
+# A theoretical example:
+
+#length constraint: l^2=x^2+y^2
+#Angle constraint: 
+#Already, with this approach, we've left the realm of linear equations
+
+#Defining a right triangle:
+#Three lines, Three points
+#Required constraints: perpendicular, length, length, coincident, coincident, coincident
+#perpendicul
+
+    
+"""
 class vertical_distance(dimension): #Defines vertical distance between two points
     def __init__(self,drawing,entity1,entity2,distance):
         dimension.__init__(self,drawing,entity1,entity2)
@@ -70,7 +93,10 @@ class vertical_distance(dimension): #Defines vertical distance between two point
             return self.baseLocation
         if entity is self.entity2:
             return [self.horizontal_distance2,self.baseLocation[1]]+array([0,self.distance])
-            
+"""           
+    
+class vertical distance    
+        
 class angle(dimension):
     def __init__(self,drawing,entity1,entity2,angle):
         pass
@@ -103,6 +129,8 @@ class geometric_feature:
         self.children=[]
         self.constraints=[]
         self.dimensions=[]
+        self.underdefined=True
+        self.degrees_of_freedom=0
     def get_children(self):
         out=self.children
         for child in self.children:
@@ -129,17 +157,20 @@ class point(geometric_feature):
     def __str__(self):
         return "Point at [{},{}]".format(self.x(),self.y())
     def setX(self,newX): # X getter
-        if type(self.location) is partial:
-            if self.location_constraint.entity1 is self:
-                self.location_constraint
-            elif self.location_constraint.entity2 is self:
-        else:
-            self.location[0]=newX
+        #if type(self.location) is partial:
+        #    if self.location_constraint.entity1 is self:
+        #        self.location_constraint
+        #    elif self.location_constraint.entity2 is self:
+        #        pass
+        #else:
+        #    self.location[0]=newX
+        self.location[0]=newX
     def setY(self,newY): # Y setter
-        if type(self.location) is partial:
-            self
-        else:
-            self.location[1]=newY
+        #if type(self.location) is partial:
+        #    pass
+        #else:
+        #    self.location[1]=newY
+        self.location[1]=newY
     def x(self): #x getter
         if type(self.location) is partial:
             return self.location()[0]
@@ -151,6 +182,7 @@ class point(geometric_feature):
             return self.location()[1]
         val= self.location[1]
         return val
+    
     def distance(self,otherPoint):
         return sqrt()
         
@@ -213,12 +245,12 @@ print(point1)
 print(point2)
 print("Defining dimension")
 
-dim1=canvas.add_dimension(vertical_distance(canvas, point1, point2, 3))
+#dim1=canvas.add_dimension(vertical_distance(canvas, point1, point2, 3))
 
 print(point1)
 print(point2)
 
-dim1.distance=5
+#dim1.distance=5
 point1.setY(3)
 
 print(point1)
